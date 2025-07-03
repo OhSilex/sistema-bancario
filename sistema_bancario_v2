@@ -1,0 +1,194 @@
+saldo = 0
+limite_valor_por_saque = 500
+extrato = ""
+numero_saque = 0
+LIMITE_SAQUES = 3
+clientes = {}
+n_conta = 0
+id_conta = 0
+def criar_cliente():
+
+    while True:
+        cpf = int(input("Insira o CPF:" ))
+
+        if cpf in clientes:
+            print("Cliente já cadastrado! Insira outro CPF")
+
+        else:
+            nome = "Guilherme"
+            idade = 18
+            clientes.setdefault(cpf, [nome, idade])
+            return clientes
+
+def criar_conta_corrente():
+        agencia = "0001"
+        global n_conta
+        global id_conta
+
+        cpf_conta = int(input("Insira o CPF da conta que deseja criar: "))
+        if cpf_conta in clientes:
+             
+             n_conta += 1
+             id_conta += 1
+
+             adc_dados_conta = [{id_conta :{"agencia" : agencia, "n_conta" : n_conta}}]
+             clientes[cpf_conta].extend(adc_dados_conta)
+             print(clientes)
+             return n_conta
+        else:
+             print("CPF não encontrado, realize o cadastro do cliente")
+             
+        return n_conta, agencia
+
+def depositar_saldo():
+    cpf_conta = int(input("Insira o CPF da conta que deseja depositar: "))
+
+    if cpf_conta in clientes:
+
+        global id_conta
+        n_conta = int(input("Insira o número da conta que deseja depositar: "))
+
+        verificar_conta = clientes[cpf_conta][-1][id_conta]["n_conta"]
+        print(verificar_conta)
+
+        if n_conta == verificar_conta:
+            clientes[cpf_conta][-1][id_conta].setdefault("saldo", 500)
+            print(clientes)
+        else:
+             print("Conta não cadastrada!")
+    else:
+         print("Cliente não cadastrado!")
+
+menu = """
+
+    BEM VINDO, DIGITE A OPÇÃO DESEJADA
+                1 - DEPOSITAR
+                2 - SACAR
+                3 - EXTRATO
+                4 - CADASTRAR CLIENTE
+                5 - CRIAR CONTA
+                6 - LISTA DE CLIENTES
+                0 - SAIR
+
+"""
+
+
+
+while True:
+    
+    opcao = int(input(menu))
+
+    if opcao == 1:
+        depositar_saldo()
+        # valor = float(input("Insira o valor que deseja depositar:"))
+        # if valor < 1:
+        #     print("Valor inválido, digite número inteiros e positivos.")
+            
+        # else:
+        #     saldo += valor
+        #     extrato += f"Depósito: R$ {valor}  \n"
+        #     print(f"Você depositou R${valor} com sucesso!")
+            
+
+    elif opcao == 2:
+        if numero_saque >= 3:
+            print("Limite de saques atingidos, tente novamente amanhã")
+            
+        else:
+            valor = float(input("Insira o valor que deseja sacar:"))
+
+            if valor > 500:
+                print("Valor do saque maior que o permitido")
+            
+            elif valor < saldo:
+                numero_saque += 1
+                saldo -= valor
+                extrato += f"Saque: R$ {valor}  \n"
+
+                print("Saque efetuado com sucesso")
+
+            elif valor > saldo:
+                print("Saldo insuficiente!")
+            
+        
+    elif opcao == 3:
+        print(extrato)
+        print (f"Saldo Atual: R$: {saldo}")
+
+    elif opcao == 4:
+        criar_cliente()
+
+    elif opcao == 5:
+        criar_conta_corrente()
+    
+    elif opcao == 6:
+        print(clientes)
+    elif opcao == 0:
+        print("Obrigado por usar nossos sistemas")
+        break
+
+    else:
+        print("Opção inválida, tente novamente")
+
+
+
+######### parte de testes ############
+
+clientes = {}
+id_conta = 0
+def criar_cliente():
+
+    while True:
+        cpf = int(input("Insira o CPF:" ))
+
+        if cpf in clientes:
+            print("Cliente já cadastrado! Insira outro CPF")
+
+        else:
+            nome = "Guilherme"
+            idade = 18
+            clientes.setdefault(cpf, [nome, idade])
+            return clientes
+criar_cliente()
+
+def criar_conta_corrente():
+        agencia = "0001"
+        n_conta = 0
+      
+        global id_conta
+        
+        cpf_conta = int(input("Insira o CPF da conta que deseja criar: "))
+        if cpf_conta in clientes:
+             n_conta += 1
+             id_conta += 1
+             adc_dados_conta = [{id_conta :{"agencia" : agencia, "n_conta" : n_conta}, 2 : {"agencia" : agencia, "n_conta" : 2}}]
+             clientes[cpf_conta].extend(adc_dados_conta)
+             print(clientes)
+        else:
+             print("error")
+             
+        return id_conta, n_conta, agencia
+criar_conta_corrente()
+
+def depositar_saldo():
+    cpf_conta = int(input("Insira o CPF da conta que deseja depositar: "))
+
+    if cpf_conta in clientes:
+
+        global id_conta
+        n_conta = int(input("Insira o número da conta que deseja depositar: "))
+
+        verificar_conta = clientes[cpf_conta][-1]
+
+        for contas in verificar_conta:
+            print(verificar_conta[contas])
+
+        if n_conta == verificar_conta:
+            clientes[cpf_conta][-1][id_conta].setdefault("saldo", 500)
+            print(clientes)
+        else:
+             print("Conta não cadastrada!")
+    else:
+         print("Cliente não cadastrado!")
+
+depositar_saldo()
