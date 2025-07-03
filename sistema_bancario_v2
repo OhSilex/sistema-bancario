@@ -49,10 +49,20 @@ def depositar_saldo():
         n_conta = int(input("Insira o número da conta que deseja depositar: "))
 
         verificar_conta = clientes[cpf_conta][-1][id_conta]["n_conta"]
-        print(verificar_conta)
 
         if n_conta == verificar_conta:
-            clientes[cpf_conta][-1][id_conta].setdefault("saldo", 500)
+            depositar = float(input("Insira o valor que deseja depositar:"))
+            if depositar < 1:
+                print("Valor inválido, digite número inteiros e positivos.")
+            
+            else:
+                global saldo
+                global extrato
+                saldo += depositar
+                extrato += f"Depósito: R$ {depositar}  \n"
+                print(f"Você depositou R${depositar} com sucesso!")
+                clientes[cpf_conta][-1][id_conta].setdefault("saldo", depositar)
+            
             print(clientes)
         else:
              print("Conta não cadastrada!")
@@ -132,63 +142,3 @@ while True:
 
 
 
-######### parte de testes ############
-
-clientes = {}
-id_conta = 0
-def criar_cliente():
-
-    while True:
-        cpf = int(input("Insira o CPF:" ))
-
-        if cpf in clientes:
-            print("Cliente já cadastrado! Insira outro CPF")
-
-        else:
-            nome = "Guilherme"
-            idade = 18
-            clientes.setdefault(cpf, [nome, idade])
-            return clientes
-criar_cliente()
-
-def criar_conta_corrente():
-        agencia = "0001"
-        n_conta = 0
-      
-        global id_conta
-        
-        cpf_conta = int(input("Insira o CPF da conta que deseja criar: "))
-        if cpf_conta in clientes:
-             n_conta += 1
-             id_conta += 1
-             adc_dados_conta = [{id_conta :{"agencia" : agencia, "n_conta" : n_conta}, 2 : {"agencia" : agencia, "n_conta" : 2}}]
-             clientes[cpf_conta].extend(adc_dados_conta)
-             print(clientes)
-        else:
-             print("error")
-             
-        return id_conta, n_conta, agencia
-criar_conta_corrente()
-
-def depositar_saldo():
-    cpf_conta = int(input("Insira o CPF da conta que deseja depositar: "))
-
-    if cpf_conta in clientes:
-
-        global id_conta
-        n_conta = int(input("Insira o número da conta que deseja depositar: "))
-
-        verificar_conta = clientes[cpf_conta][-1]
-
-        for contas in verificar_conta:
-            print(verificar_conta[contas])
-
-        if n_conta == verificar_conta:
-            clientes[cpf_conta][-1][id_conta].setdefault("saldo", 500)
-            print(clientes)
-        else:
-             print("Conta não cadastrada!")
-    else:
-         print("Cliente não cadastrado!")
-
-depositar_saldo()
